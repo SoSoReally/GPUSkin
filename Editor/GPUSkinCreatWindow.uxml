@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/GPUSkin/Editor/GPUSkinCreatWindow.uss?fileID=7433441132597879392&amp;guid=b0f96c93af6947147940a6700ef9d9fa&amp;type=3#GPUSkinCreatWindow" />
+    <ui:VisualElement focusable="false" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); opacity: 1; display: flex; width: auto; height: auto; flex-shrink: 1;">
+        <ui:EnumField label="FrameRate" type="GPUSkin.FrameRate, Assembly-CSharp-Editor" name="FrameRate" value="ClipFrame" style="flex-grow: 0; flex-basis: auto; flex-direction: row; width: 250px;" />
+        <uie:ObjectField label="Source Object" name="SourceObject_Field" type="UnityEngine.GameObject, UnityEngine.CoreModule" style="width: 250px;" />
+        <uie:ObjectField label="AnimatorController" name="AnimatorController_Field" type="UnityEditor.Animations.AnimatorController, UnityEditor.CoreModule" style="width: 250px;" />
+        <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-self: auto; align-items: flex-start; height: auto; justify-content: flex-start; max-height: 150px; flex-wrap: nowrap;">
+            <ui:Button tabindex="-1" text="Save Path" display-tooltip-when-elided="true" name="Path" />
+            <ui:Label tabindex="-1" text="Assets/" display-tooltip-when-elided="true" enable-rich-text="false" name="PathLabel" style="min-width: auto; flex-wrap: wrap; flex-direction: column; flex-shrink: initial; flex-grow: initial; white-space: normal; -unity-text-align: upper-left; text-overflow: clip; -unity-text-outline-width: 0; align-self: center; align-items: auto; flex-basis: auto; margin-left: 48px; padding-left: 0;" />
+        </ui:VisualElement>
+        <ui:Button tabindex="-1" text="Export" display-tooltip-when-elided="true" name="Export" style="align-items: center; flex-shrink: initial; flex-basis: auto; align-self: flex-start; justify-content: flex-start; flex-direction: column-reverse; -unity-text-align: middle-left;" />
+    </ui:VisualElement>
+</ui:UXML>
