@@ -1,15 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using DOTS;
-using GPUSkin;
-using Unity.Burst.Intrinsics;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.Entities;
 using Unity.Mathematics;
-using UnityEditorInternal;
 using UnityEngine;
-using static Unity.Collections.AllocatorManager;
 namespace GPUSkin
 {
     public class GPUAnimatorScript : MonoBehaviour
