@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Purchasing;
 using UnityEngine;
 
 namespace GPUSkin
@@ -12,7 +13,7 @@ namespace GPUSkin
         public int BoneCount;
         public int ClipCount;
         public Mesh mesh;
-        public Material material;
+        public Material materialDefault;
         public Texture2D AnimationTexture;
         public GPUSkinState[] Clips;
     }
@@ -22,12 +23,12 @@ namespace GPUSkin
     {
         public GPUAnimationClip GPUClip;
         public string Name;
-
-        [SerializeField]
-        private AnimationClip sourceClip;
-        public GPUSkinState(AnimationClip Clip)
+#if UNITY_EDITOR
+        public AnimationClip sourceClip;
+#endif
+        public GPUSkinState()
         {
-            sourceClip = Clip; 
+
         }
     }
     [System.Serializable]

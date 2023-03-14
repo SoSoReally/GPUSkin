@@ -50,6 +50,7 @@ namespace GPUSkin
             AnimationClipMap = new Dictionary<AnimationClip, GPUAnimationClip>();
             MeshTransformBonesMap = new Dictionary<Renderer, Transform[]>();
             Clone = UnityEngine.Object.Instantiate(Source, Vector3.zero, Quaternion.identity);
+            Clone.transform.localScale = Vector3.one;
             Bones = FindAllBonesAndSetBindPos(Clone);
             BoneLength = Bones.Length;
             skinAsset = ScriptableObject.CreateInstance<GPUSkinAsset>();
@@ -186,7 +187,7 @@ namespace GPUSkin
                 for (int b = 0; b < Bones.Length; b++)
                 {
                     var index= b + f * Bones.Length;
-                    Matrix4x4 ma = Bones[b].localToWorldMatrix * BindPos[b];
+                    Matrix4x4 ma =   Bones[b].localToWorldMatrix* skinRoot.transform.worldToLocalMatrix * BindPos[b];
                     //ma = new Matrix4x4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, 0), new Vector4(0, 0, 1, 0), new Vector4(0, 0, 0, 1));
                     pixel[index].Frist = ma.GetRow(0);
                     pixel[index].Scenod = ma.GetRow(1);
@@ -335,10 +336,14 @@ namespace GPUSkin
             skinAsset.Clips = new GPUSkinState[clips.Length];
             for (int i = 0; i < skinAsset.Clips.Length; i++)
             {
-                skinAsset.Clips[i] = new GPUSkinState(clips[i])
+                skinAsset.Clips[i] = new GPUSkinState()
                 { 
                     Name = clips[i].name,
-                    GPUClip = AnimationClipMap[clips[i]]
+                    GPUClip = AnimationClipMap[clips[i]],
+
+#if UNITY_EDITOR
+                    sourceClip = clips[i]
+#endif
 
                 };
 
@@ -379,8 +384,8 @@ namespace GPUSkin
             prefab.AddComponent<MeshRenderer>().material = material;
 
 
-            skinAsset.material = material;
-            AssetDatabase.CreateAsset(skinAsset.material, floderPathAdd + Source.name + ".mat");
+            skinAsset.materialDefault = material;
+            AssetDatabase.CreateAsset(skinAsset.materialDefault, floderPathAdd + Source.name + ".mat");
 
 
             var prefabPath = floderPath + "/" + prefab.name + ".prefab";
