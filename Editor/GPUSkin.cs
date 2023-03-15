@@ -42,6 +42,8 @@ namespace GPUSkin
         Texture2D skintexture2D;
         //---------GPUSkinAsset----------
         GPUSkinAsset skinAsset;
+        //only source informaton
+        GPUSkinAssetSource sourceSkinAsset;
         //<int,int> pixelstart,framelength
         Dictionary<AnimationClip,GPUAnimationClip> AnimationClipMap;
         public void Export()
@@ -54,7 +56,7 @@ namespace GPUSkin
             Bones = FindAllBonesAndSetBindPos(Clone);
             BoneLength = Bones.Length;
             skinAsset = ScriptableObject.CreateInstance<GPUSkinAsset>();
-
+            sourceSkinAsset = CreateInstance<GPUSkinAssetSource>();
             SetBoneIndexMap(Bones);
 
             Clips = animator.animationClips;
@@ -79,12 +81,12 @@ namespace GPUSkin
             var floderPathAdd = floderPath + "/";
 
 
-            AssetDatabase.CreateAsset(newMesh, floderPathAdd + "_newMesh.asset");
+            AssetDatabase.CreateAsset(newMesh, floderPathAdd + Source.name+ "_newMesh.asset");
 
 
             texture.SetPixels(colors);
             texture.Apply();
-            AssetDatabase.CreateAsset(texture, floderPathAdd + "_clip.asset");
+            AssetDatabase.CreateAsset(texture, floderPathAdd + Source.name+"_clip.asset");
 
             SetupGPUSkinAsset(Bones, Clips);
 
@@ -93,6 +95,8 @@ namespace GPUSkin
             skinAsset.mesh = newMesh;
             skinAsset.AnimationTexture = texture;
             AssetDatabase.CreateAsset(skinAsset, floderPathAdd + Source.name + "_skinAsset.asset");
+
+            AssetDatabase.CreateAsset(sourceSkinAsset, floderPathAdd + Source.name + "_sourceskinAsset.asset");
 
             Editor.DestroyImmediate(Clone);
         }
@@ -326,27 +330,28 @@ namespace GPUSkin
         {
             skinAsset.BoneCount = bones.Length;
 
-            skinAsset.BoneNames = new string[bones.Length];
+            sourceSkinAsset.BoneNames = new string[bones.Length];
             for (int i = 0; i < bones.Length; i++)
             {
-                skinAsset.BoneNames[i] = bones[i].name;
+                sourceSkinAsset.BoneNames[i] = bones[i].name;
             }
             skinAsset.ClipCount = clips.Length;
 
             skinAsset.Clips = new GPUSkinState[clips.Length];
+            sourceSkinAsset.sourceClip = new GPUSkinAssetSource.GPUSkinStateSource[clips.Length];
             for (int i = 0; i < skinAsset.Clips.Length; i++)
             {
                 skinAsset.Clips[i] = new GPUSkinState()
                 { 
                     Name = clips[i].name,
                     GPUClip = AnimationClipMap[clips[i]],
-
-#if UNITY_EDITOR
-                    sourceClip = clips[i]
-#endif
-
                 };
 
+                sourceSkinAsset.sourceClip[i] = new GPUSkinAssetSource.GPUSkinStateSource()
+                {
+                    GPUSkinState = skinAsset.Clips[i],
+                    AnimationClip = clips[i]
+                };
             }
             skinAsset.EveryFramePixelLength = skinAsset.BoneCount * BoneRow;
 
