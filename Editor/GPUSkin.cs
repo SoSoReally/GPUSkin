@@ -12,6 +12,8 @@ using System.IO;
 using UnityEngine.Windows;
 using Unity.Collections.LowLevel.Unsafe;
 using File = UnityEngine.Windows.File;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 
 namespace GPUSkin
 {
@@ -31,7 +33,7 @@ namespace GPUSkin
         Dictionary<Renderer,Transform[]> MeshTransformBonesMap;
 
         //--------Animator-----------
-        AnimatorController animator=> AnimatorControllerField.value as AnimatorController;
+        //AnimatorController animator=> AnimatorControllerField.value as AnimatorController;
         AnimationClip[] Clips;
         SkinnedMeshRenderer smr;
         const int BoneRow = 3;
@@ -58,8 +60,15 @@ namespace GPUSkin
             skinAsset = ScriptableObject.CreateInstance<GPUSkinAsset>();
             sourceSkinAsset = CreateInstance<GPUSkinAssetSource>();
             SetBoneIndexMap(Bones);
-
-            Clips = animator.animationClips;
+            var visulm = listView.Query<ObjectField>();
+            var bd = visulm.Build();
+            var obs = bd.ToArray();
+            
+            Clips = new AnimationClip[obs.Length];
+            for (int i = 0; i < obs.Length; i++)
+            {
+                Clips[i] = obs[i].value as AnimationClip;
+            }
             Clips = Clips.Distinct().ToArray();
             var totalFrame = Clips.Sum((c) => (int)(c.length * GetClipFrameRate(c, frameRate)));
             var texture = CreatTexture2D(totalFrame, Bones.Length);
