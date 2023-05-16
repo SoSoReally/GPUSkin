@@ -1,0 +1,16 @@
+{
+    "name": "GPUSkin.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:629db71457dde374283a65dc03b2e2e3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
